@@ -1,0 +1,45 @@
+spring:
+  application:
+    name: APIGateway
+  h2:
+    console:
+      enabled: true  
+  datasource:
+     url : jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+     driverClassName : org.h2.Driver
+     username: sa
+     password: 
+  jpa:
+    database-platform:  org.hibernate.dialect.H2Dialect 
+  security:
+    user:
+      name: user
+      password: user
+    
+eureka:
+  client:
+     serviceUrl:
+         defaultZone : http://discovery:8761/eureka/    
+              
+server:
+  port : 8762
+
+security:
+   basic:
+      enable : false   
+      
+
+zuul:
+  routes:
+    movies:
+      path: /movies/**
+      serviceId : movies-service
+    actors:
+      path: /actors/**
+      serviceId : actors-service
+  host:
+     socket-timeout-millis : 30000
+ 
+      
+
+    
