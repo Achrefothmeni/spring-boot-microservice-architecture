@@ -20,6 +20,11 @@ public class Rate implements Serializable {
         this.rate = rate;
     }
 
+    public Rate(int movieId, float rate) {
+        this.movieId = movieId;
+        this.rate = rate;
+    }
+
     public Rate() {
     }
 
