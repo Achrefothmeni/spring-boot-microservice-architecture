@@ -37,18 +37,9 @@ const client = new Eureka({
       fetchRegistry:true,
     },
     eureka: {
-        
-        
-        // eureka server host / port
-        /*serviceUrls: {
-          default: [
-            'http://discovery:8761/eureka/apps',
-            
-          ]
-        },*/
         host:'discovery',
         port:8761,
-        servicePath: '/eureka/apps/'
+        servicePath: '/eureka'
       },
   });
 

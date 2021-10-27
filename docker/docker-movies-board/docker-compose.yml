@@ -58,15 +58,6 @@ services:
     image: "booking-service"
     depends_on:
       - movies-service
-  booking-service-instance-2:
-    build: ../../booking-service
-    environment:
-      - eureka.client.serviceUrl.defaultZone=http://discovery:8761/eureka/
-    ports:
-      - "5005:8084"
-    image: "booking-service"
-    depends_on:
-      - movies-service
   payment-service:
     build: ../../payment-service
     ports:
