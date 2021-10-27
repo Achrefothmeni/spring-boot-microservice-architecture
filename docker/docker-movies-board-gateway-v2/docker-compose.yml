@@ -5,6 +5,18 @@ services:
     ports:
       - "8761:8761"
     image: "discovery-service"
+
+  
+  config-server:
+    build: ../../config-server
+    environment:
+      - eureka.client.serviceUrl.defaultZone=http://discovery:8761/eureka/
+    ports:
+      - "8888:8888"
+    image: "config-server"
+    depends_on:
+      - discovery  
+     
   movies-service:
     build: ../../movies-service
     environment: 
@@ -12,7 +24,10 @@ services:
     ports:
       - "5000:8082"
     image: "movies-service"
-  actor-service-instance-1:
+    depends_on:
+      - config-server
+
+  actor-service:
     build:  ../../actors-service
     environment: 
       - eureka.client.serviceUrl.defaultZone=http://discovery:8761/eureka/
@@ -20,17 +35,9 @@ services:
       - "5001:8081"
     image: "actors-service"
     depends_on:
-      - movies-service
-  actor-service-instance-2:
-      build:  ../../actors-service
-      environment: 
-        - eureka.client.serviceUrl.defaultZone=http://discovery:8761/eureka/
-      ports:
-        - "5002:8081"
-      image: "actors-service"
-      depends_on:
-        - movies-service
-  rate-service-instance-1:
+      - config-server
+      
+  rate-service:
     build: ../../rate-service
     environment:
       - eureka.client.serviceUrl.defaultZone=http://discovery:8761/eureka/
@@ -38,18 +45,10 @@ services:
       - "5004:8083"
     image: "rate-service"
     depends_on:
-      - movies-service
-  rate-service-instance-2:
-    build: ../../rate-service
-    environment:
-      - eureka.client.serviceUrl.defaultZone=http://discovery:8761/eureka/
-    ports:
-      - "5005:8083"
-    image: "rate-service"
-    depends_on:
-      - movies-service
-  
-  booking-service-instance-1:
+      - config-server
+    
+
+  booking-service:
     build: ../../booking-service
     environment:
       - eureka.client.serviceUrl.defaultZone=http://discovery:8761/eureka/
@@ -57,21 +56,22 @@ services:
       - "5006:8084"
     image: "booking-service"
     depends_on:
-      - movies-service
-  booking-service-instance-2:
-    build: ../../booking-service
+      - config-server
+
+  Gateway:
+    build: ../../gateway-server
     environment:
       - eureka.client.serviceUrl.defaultZone=http://discovery:8761/eureka/
     ports:
-      - "5005:8084"
-    image: "booking-service"
-    depends_on:
-      - movies-service
-
-  gateway:
-    build: ../../zuul-server
-    environment: 
-      - eureka.client.serviceUrl.defaultZone=http://discovery:8761/eureka/
-    ports:
       - "8762:8762"
-    image: "gateway-server"
+    image: "gateway-service"
+    depends_on:
+      - discovery
+
+      
+  mongo:
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    image: "mongo"
+        
