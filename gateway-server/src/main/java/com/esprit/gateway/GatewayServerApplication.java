@@ -37,10 +37,11 @@ public class GatewayServerApplication {
 	@Bean
 	SecurityWebFilterChain authorization(ServerHttpSecurity http) {
 
-		final String actorsApi = "/actors/api";
-		final String moviesApi = "/movies/api";
-		final String rateApi = "/rate/api";
-		final String bookingApi = "/bookings/api";
+		final String actorsApi = "/Actors";
+		final String moviesApi = "/Movie";
+		final String rateApi = "/Rate";
+		final String bookingApi = "/Booking";
+		final String PaymentApi = "/payment/api";
 
 		return http.httpBasic(Customizer.withDefaults()).csrf(ServerHttpSecurity.CsrfSpec::disable)
 				.authorizeExchange(ae -> ae.pathMatchers(HttpMethod.POST, actorsApi).authenticated()
@@ -56,6 +57,9 @@ public class GatewayServerApplication {
 						.pathMatchers(HttpMethod.POST, bookingApi).authenticated()
 						.pathMatchers(HttpMethod.PUT, bookingApi + "/**").authenticated()
 						.pathMatchers(HttpMethod.DELETE, bookingApi + "/**").authenticated()
+						.pathMatchers(HttpMethod.POST, PaymentApi).authenticated()
+						.pathMatchers(HttpMethod.PUT, PaymentApi + "/**").authenticated()
+						.pathMatchers(HttpMethod.DELETE, PaymentApi + "/**").authenticated()
 
 						.anyExchange().permitAll())
 				.build();
@@ -70,12 +74,15 @@ public class GatewayServerApplication {
 
 	@Bean
 	public RouteLocator gatewayRoutes(RouteLocatorBuilder builder) {
-		return builder.routes().route(r -> r.path("/bookings/**")
+		return builder.routes().route((r -> r.path("/bookings/**")
 				// Pre and Post Filters provided by Spring Cloud Gateway
 				.filters(f -> f.addRequestHeader("first-request", "first-request-header")
 						.addResponseHeader("first-response", "first-response-header").stripPrefix(1))
-				.uri("lb://BOOKINGS-SERVICE"))
-
+				.uri("lb://BOOKINGS-SERVICE"))).route((r -> r.path("/payment/**")
+						// Pre and Post Filters provided by Spring Cloud Gateway
+						.filters(f -> f.addRequestHeader("second-request", "second-request-header")
+								.addResponseHeader("second-response", "second-response-header").stripPrefix(1))
+						.uri("lb://PAYMENT-SERVICE")))
 				.build();
 
 	}

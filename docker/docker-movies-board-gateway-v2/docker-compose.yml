@@ -57,6 +57,17 @@ services:
     image: "booking-service"
     depends_on:
       - config-server
+      
+  payment-service:
+    build: ../../payment-service
+    ports:
+      - "3005:3005"
+    image: "payment-node"
+    links:
+      - mongo
+    depends_on:
+      - discovery
+    
 
   Gateway:
     build: ../../gateway-server

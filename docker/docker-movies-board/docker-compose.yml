@@ -67,6 +67,17 @@ services:
     image: "booking-service"
     depends_on:
       - movies-service
+  payment-service:
+    build: ../../payment-service
+    ports:
+      - "3005:3005"
+    image: "payment-node"
+    links:
+      - mongo
+    depends_on:
+      - discovery
+    
+  
 
   gateway:
     build: ../../zuul-server
@@ -75,3 +86,9 @@ services:
     ports:
       - "8762:8762"
     image: "gateway-server"
+    
+  mongo:
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    image: "mongo"
