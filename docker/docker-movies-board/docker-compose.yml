@@ -64,12 +64,17 @@ services:
     ports:
       - "3005:3005"
     image: "payment-node"
+<<<<<<< HEAD
     #links:
       #- mongo
     depends_on:
       - discovery
     
   
+=======
+    links:
+      - mongo
+>>>>>>> 4b9798bf3992cc7c21b64a5924d18590ae69b0d2
 
   gateway:
     build: ../../zuul-server
