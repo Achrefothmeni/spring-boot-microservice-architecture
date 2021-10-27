@@ -58,13 +58,14 @@ services:
     image: "booking-service"
     depends_on:
       - movies-service
+
   payment-service:
     build: ../../payment-service
     ports:
       - "3005:3005"
     image: "payment-node"
-    links:
-      - mongo
+    #links:
+      #- mongo
     depends_on:
       - discovery
     
