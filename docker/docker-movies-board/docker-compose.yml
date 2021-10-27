@@ -65,10 +65,6 @@ services:
     image: "payment-node"
     links:
       - mongo
-    depends_on:
-      - discovery
-    
-  
 
   gateway:
     build: ../../zuul-server
