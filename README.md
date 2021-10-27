@@ -21,5 +21,5 @@ docker-compose -f "docker/docker-movies-board-gateway-v2/docker-compose.yml" up
 ```
 
 ### Important Endpoint *
-* [http://localhost:80](http://localhost:8762) - Gateway
+* [http://localhost:8762](http://localhost:8762) - Gateway
 * [http://localhost:8761](http://localhost:8761) - Eureka Dashboard
